@@ -14,40 +14,42 @@ if (isset($_POST['submit'])) {
     // Insert the user data into the database
     $sql = "INSERT INTO tasks VALUES (null,'$name','$desc', '$date', '$status')";
     mysqli_query($conn, $sql);
-  
+    // header("refresh: 0.3;");
   }
   
-if (isset($_POST['delete'])) {
+if (isset($_GET['id'])) {
     // Write the SQL query to delete the data
-    $id = $_POST['id'];
+    $id = $_GET['id'];
     $sql = "DELETE FROM tasks WHERE id=".$id;
 
     // Execute the SQL query
     mysqli_query($conn, $sql);
+    header("Location: /task");
   }
 
-  if (isset($_GET['edit'])) {
-    // Write the SQL query to delete the data
-    $id = $_GET['id'];
-    $sql = "SELECT * FROM tasks WHERE id=".$id;
-    $get_result = mysqli_query($conn, $sql);
-  }
 ?>
 
 <!DOCTYPE html>
-<html>
+<html data-theme="wireframe">
 <head>
   <title>CRUD Application - Read Records</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.3/dist/full.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-  <h1>CRUD Application - Read Records</h1>
-  <table border="1">
+<main class="max-w-[768px] py-10 px-5 mx-auto">
+  <div class="flex justify-between items-center">
+    <h1 class="text-3xl py-5 font-bold text-center uppercase">Tasks</h1>
+    <a href="/task/create.php" class="btn btn-md">Add New</a>
+  </div>
+  <table class="table w-full">
     <tr>
       <th>id</th>
       <th>Name</th>
       <th>Description</th>
       <th>Due Date</th>
       <th>Status</th>
+      <th>Action</th>
     </tr>
     <?php
     // Loop through all users and display their details
@@ -58,52 +60,21 @@ if (isset($_POST['delete'])) {
       echo "<td>".$row['task_description']."</td>";
       echo "<td>".$row['task_due_date']."</td>";
       echo "<td>".$row['task_status']."</td>";
-      echo "<td><form method='post'><input type='hidden' value='".$row['id']."' name='id'><button type='submit' name='delete'>delete</button></form></td>";
-      echo "<td><form method='get'><input type='hidden' value='".$row['id']."' name='id'><button type='submit' name='edit'>edit</button></form></td>";
+      echo "<td><a href='/task/index.php?id=".$row['id']."' class='btn btn-outline btn-error btn-sm'>delete</a></td>";
+      echo "<td><a href='/task/edit.php?id=".$row['id']."' class='btn btn-outline btn-info btn-sm'>edit</a></td>";
     }
     ?>
   </table>
-  <br>
-  <a href="create.php">Add New User</a>
-</body>
-</html>
 
-  <?php
+  </main> 
+
+</body>
+
+ 
+    
+</html>
+<?php
 // Close the database connection
 mysqli_close($conn);
 ?>
 
-<form method="post">
-    <label>Name:</label>
-    <input type="text" name="name"><br>
-    <label>Description:</label>
-    <input type="text" name="desc"><br>
-    <label>Date:</label>
-    <input type="date" name="date"><br>
-    <label>Status:</label>
-   <select name="status">
-        <option value="incomplete">Incomplete</option>
-   </select>
-    <button type="submit" name="submit">Submit</button>
-<form>
-
-<?php 
-if ($get_result) { 
-$row = mysqli_fetch_assoc($get_result);    
-?>
-
-<form method="post">
-    <label>Name:</label>
-    <input type="text" name="name" value="<?php echo $row['task_name']; ?>"><br>
-    <label>Description:</label>
-    <input type="text" name="desc"><br>
-    <label>Date:</label>
-    <input type="date" name="date"><br>
-    <label>Status:</label>
-   <select name="status">
-        <option value="incomplete">Incomplete</option>
-   </select>
-    <button type="submit" name="submit">Update</button>
-<form>
-
-<?php } ?>
