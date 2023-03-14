@@ -69,8 +69,9 @@ if (isset($_POST['update'])) {
                   <span class="label-text">Status</span>
                 </label>
                 <select name="status" class="select select-bordered w-full " value="<?php echo $row['task_due_date'] ?>">
-                <option value="complete">Complete</option>
-                <option value="incomplete">Incomplete</option>
+               <option value="incomplete">Incomplete</option>
+          <option value="complete">Complete</option>
+          <option value="in_progress">In-Progress</option>
                 </select>
               </div>
           

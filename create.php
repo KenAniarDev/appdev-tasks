@@ -59,6 +59,8 @@ if (isset($_POST['submit'])) {
           </label>
           <select name="status" class="select select-bordered w-full">
           <option value="incomplete">Incomplete</option>
+          <option value="complete">Complete</option>
+          <option value="in_progress">In-Progress</option>
           </select>
         </div>
 
